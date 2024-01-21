@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import Header from "./components/header";
 import TodoItem from "./components/todoItem";
 import AddTodo from "./components/addTodo";
+import axios from "axios";
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -30,9 +31,34 @@ export default function App() {
 
   const handleAddItem = (item) => {
     if (item) {
-      setTodos((prev) => [...prev, { text: item, id: Math.random() }]);
+      setTodos((prev) => [
+        ...prev,
+        { title: item, id: Math.random(), completed: false },
+      ]);
+    } else {
+      Alert.alert("Heyy!!!", "Must enter text first before submitting", [
+        {
+          text: "Coninue",
+          onPress: () => console.log("Error closed"),
+        },
+      ]);
     }
   };
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://jsonplaceholder.typicode.com/todos"
+        );
+        setTodos(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchTodos();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -63,6 +89,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 40,
+    flex: 1,
   },
-  list: { marginTop: 10 },
+  list: { marginTop: 10, flex: 1 },
 });

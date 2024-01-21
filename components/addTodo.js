@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 
 function AddTodo({ handleAddItem }) {
   const [text, setText] = useState("");
@@ -8,21 +17,32 @@ function AddTodo({ handleAddItem }) {
     setText(val);
   };
 
-  return (
-    <View>
-      <TextInput
-        placeholder="Add new todo"
-        onChangeText={(val) => handleChangeText(val)}
-        value={text}
-        style={styles.input}
-      />
+  const handleSubmitItem = () => {
+    handleAddItem(text);
+    setText("");
+  };
 
-      <Button
-        title="Add todo"
-        color="blue"
-        onPress={() => handleAddItem(text)}
-      />
-    </View>
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        console.log("is dimissed");
+      }}>
+      <View>
+        <TextInput
+          placeholder="Add new todo"
+          onChangeText={(val) => handleChangeText(val)}
+          value={text}
+          style={styles.input}
+        />
+
+        <TouchableOpacity
+          onPress={handleSubmitItem}
+          style={styles.appButtonContainer}>
+          <Text style={styles.appButtonText}>Add Todo</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -35,5 +55,17 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
+  },
+  appButtonContainer: {
+    backgroundColor: "#007AFF",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fafafa",
+    fontWeight: "700",
+    textAlign: "center",
   },
 });

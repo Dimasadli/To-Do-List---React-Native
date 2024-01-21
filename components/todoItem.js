@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 function TodoItem({ item, handlePressItem }) {
   return (
     <TouchableOpacity onPress={() => handlePressItem(item.id)}>
-      <Text style={styles.item}>{item.text}</Text>
+      <Text style={styles.item}>{item.title}</Text>
     </TouchableOpacity>
   );
 }
