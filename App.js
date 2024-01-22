@@ -3,7 +3,6 @@ import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import Header from "./components/header";
 import TodoItem from "./components/todoItem";
 import AddTodo from "./components/addTodo";
-import axios from "axios";
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -31,10 +30,7 @@ export default function App() {
 
   const handleAddItem = (item) => {
     if (item) {
-      setTodos((prev) => [
-        ...prev,
-        { title: item, id: Math.random(), completed: false },
-      ]);
+      setTodos((prev) => [...prev, { text: item, id: Math.random() }]);
     } else {
       Alert.alert("Heyy!!!", "Must enter text first before submitting", [
         {
@@ -45,20 +41,22 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://jsonplaceholder.typicode.com/todos"
-        );
-        setTodos(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  // Connect with BE
 
-    fetchTodos();
-  }, []);
+  // useEffect(() => {
+  //   const fetchTodos = async () => {
+  //     try {
+  //       const { data } = await axios.get(
+  //         "https://jsonplaceholder.typicode.com/todos"
+  //       );
+  //       setTodos(data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   fetchTodos();
+  // }, []);
 
   return (
     <View style={styles.container}>
